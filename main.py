@@ -3,21 +3,19 @@ from firebase import Firebase
 firebase = Firebase()
 
 # 定義
-def print_data():
-    print('\n')
-    data = firebase.get(address)
-    print(data)
+def print_flag():
+    data = firebase.get('data/flag')
+    data = 'flag : ' + str(data)
+    return data
 
-def function(val):
-    child = address + '/' + key
+def print_message():
+    data = firebase.get('data/message')
+    data = 'message : ' + str(data)
+    return data
 
-    updates = {child : val}
-    firebase.update(updates)
-
-def wrong():
-    print('\n')
-    print('入力された文字に間違いがあります')
-
+def update(key, value, path):
+    updates = {key : value}
+    firebase.update(updates, path)
 
 
 # 実際の操作表示
@@ -28,13 +26,12 @@ print('''
 
     このツールはプロジェクトのデータベースにおける、
     フラグとメッセージを追加,削除するツールです。
-    以下の指示に従って入力して下さい。
-''')
+    以下の指示に従って入力して下さい。''')
 
 while True:
-    address = 'data'
-
-    print_data()
+    print("\n")
+    print(print_flag())
+    print(print_message())
 
     print(""" 　    
     >フラグを扱う　　：f
@@ -45,10 +42,9 @@ while True:
     mode = input('>> ')
 
 
+    #フラグ操作
     if mode == 'f':
-        address += '/flag'
-
-        print_data()
+        print(print_flag())
 
         print(""" 
     >要素を追加する　：a
@@ -61,23 +57,23 @@ while True:
             print('\n追加したいフラグ名を入力して下さい')
             key = input('>> ')            
 
-            function(0)
+            update(key, 0, 'data/flag')
 
         elif submode == 'd':
             print('\n削除したいフラグ名を入力して下さい')
             key = input('>> ')            
 
-            function({})
+            firebase.delete(key, "data/flag")
 
         else:
-            wrong()
-            
-        print_data()
+            print('入力された文字に間違いがあります')
 
+        # print('\n')
+        # print(print_flag())
+
+    #メッセージ操作
     elif mode == 'm':
-        address += '/message'
-
-        print_data()
+        print(print_message())
 
         print(""" 
     >要素を追加,変更する　：a
@@ -87,26 +83,29 @@ while True:
         submode = input('>> ')
 
         if submode == 'a':
-            print('\n追加,変更したいメッセージのkeyを入力して下さい')
+            print('\n追加,変更したいメッセージのkey名を入力して下さい')
             key = input('>> ')
 
             print('\nメッセージを入力して下さい')
-            value = input('>> ')
+            val = input('>> ')
 
-            function(value)
+            update(key, val, "data/message")
 
         elif submode == 'd':
             print('\n削除したいメッセージのkeyを入力して下さい')
             key = input('>> ')            
 
-            function({})
+            firebase.delete(key, 'data/message')
 
         else:
-            wrong()
-            
-        print_data()
+            print('入力された文字に間違いがあります')
 
+        # print('\n')    
+        # print(print_message())
+
+    #その他
     elif mode == 'q':    
         break
     else:
-        wrong()
+        print('\n')
+        print('入力された文字に間違いがあります')
