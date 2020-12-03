@@ -3,19 +3,9 @@ from firebase import Firebase
 firebase = Firebase()
 
 # 定義
-def print_flag():
-    data = firebase.get('data/flag')
-    data = 'flag : ' + str(data)
-    return data
-
-def print_message():
-    data = firebase.get('data/message')
-    data = 'message : ' + str(data)
-    return data
-
-def update(key, value, path):
-    updates = {key : value}
-    firebase.update(updates, path)
+def get_data(type):
+    data = firebase.get(f"magio/{type}")
+    return f"{type}: {data}"
 
 
 # 実際の操作表示
@@ -30,8 +20,8 @@ print('''
 
 while True:
     print("\n")
-    print(print_flag())
-    print(print_message())
+    print(get_data("flag"))
+    print(get_data("message"))
 
     print(""" 　    
     >フラグを扱う　　：f
@@ -44,7 +34,7 @@ while True:
 
     #フラグ操作
     if mode == 'f':
-        print(print_flag())
+        print(get_data("flag"))
 
         print(""" 
     >要素を追加する　：a
@@ -57,7 +47,7 @@ while True:
             print('\n追加したいフラグ名を入力して下さい')
             key = input('>> ')            
 
-            update(key, 0, 'data/flag')
+            firebase.update({key: 0}, 'magio/flag')
 
         elif submode == 'd':
             print('\n削除したいフラグ名を入力して下さい')
@@ -71,7 +61,7 @@ while True:
 
     #メッセージ操作
     elif mode == 'm':
-        print(print_message())
+        print(get_data("message"))
 
         print(""" 
     >要素を追加,変更する　：a
@@ -87,7 +77,7 @@ while True:
             print('\nメッセージを入力して下さい')
             val = input('>> ')
 
-            update(key, val, "data/message")
+            firebase.update({key: val}, 'magio/message')
 
         elif submode == 'd':
             print('\n削除したいメッセージのkeyを入力して下さい')
