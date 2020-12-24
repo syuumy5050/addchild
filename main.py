@@ -4,7 +4,7 @@ firebase = Firebase()
 
 # 定義
 def get_data(type):
-    data = firebase.get(f"magio/{type}")
+    data = firebase.get(f"data/{type}")
     return f"{type}: {data}"
 
 
@@ -47,7 +47,7 @@ while True:
             print('\n追加したいフラグ名を入力して下さい')
             key = input('>> ')            
 
-            firebase.update({key: 0}, 'magio/flag')
+            firebase.update({key: 0}, 'data/flag')
 
         elif submode == 'd':
             print('\n削除したいフラグ名を入力して下さい')
@@ -77,7 +77,7 @@ while True:
             print('\nメッセージを入力して下さい')
             val = input('>> ')
 
-            firebase.update({key: val}, 'magio/message')
+            firebase.update({key: val}, 'data/message')
 
         elif submode == 'd':
             print('\n削除したいメッセージのkeyを入力して下さい')
